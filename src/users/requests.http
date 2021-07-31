@@ -10,3 +10,7 @@ content-type: application/json
 
 ### Find a user with particular ID
 GET http://localhost:3000/auth/1
+
+
+### Find all users with a given email
+GET http://localhost:3000/auth?email=simen@dehlin.dev
