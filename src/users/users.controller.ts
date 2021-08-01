@@ -38,10 +38,12 @@ export class UsersController {
   createUser(@Body() body: CreateUserDto) {
     this.usersService.create(body.email, body.password);
   }
+
   @Delete('/:id')
   removeUser(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
+
   @Patch('/:id')
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.usersService.update(+id, body);
