@@ -38,6 +38,10 @@ export class UsersController {
   findAllUsers(@Query('email') email: string) {
     return this.usersService.find(email);
   }
+  @Post('/signout')
+  signOut(@Session() session: any) {
+    session.userId = null;
+  }
 
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto, @Session() session: any) {
