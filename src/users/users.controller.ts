@@ -52,6 +52,11 @@ export class UsersController {
     return user;
   }
 
+  @Get('whoami')
+  whoAmO(@Session() session: any) {
+    return this.usersService.findOne(session.userId);
+  }
+
   @Delete('/:id')
   removeUser(@Param('id') id: string) {
     return this.usersService.remove(+id);
