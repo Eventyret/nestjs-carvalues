@@ -12,9 +12,11 @@ import {
 } from '@nestjs/common';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-user.decorators';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from './dtos/user.dto';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Controller('auth')
@@ -57,7 +59,7 @@ export class UsersController {
   }
 
   @Get('whoami')
-  whoAmO(@Session() session: any) {
+  whoAmO(@CurrentUser() user: User) {
     return this.usersService.findOne(session.userId);
   }
 
