@@ -42,6 +42,10 @@ export class UsersController {
   createUser(@Body() body: CreateUserDto) {
     return this.authService.signup(body.email, body.password);
   }
+  @Post('/signin')
+  async signin(@Body() body: CreateUserDto) {
+    return this.authService.signin(body.email, body.password);
+  }
 
   @Delete('/:id')
   removeUser(@Param('id') id: string) {
