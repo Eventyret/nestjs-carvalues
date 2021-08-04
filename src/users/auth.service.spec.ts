@@ -51,4 +51,13 @@ describe('AuthService', () => {
       expect(err).toBeInstanceOf(NotFoundException);
     }
   });
+  it('throws an error if an invalid password is provided', async () => {
+    fakeUserService.find = () =>
+      Promise.resolve([{ email: 'bob@bob.com', password: 'asdf' } as User]);
+    try {
+      await service.signin('sdadsa@dsadsa.com', '123123');
+    } catch (err) {
+      expect(err).toBeInstanceOf(BadRequestException);
+    }
+  });
 });
