@@ -60,4 +60,16 @@ describe('AuthService', () => {
       expect(err).toBeInstanceOf(BadRequestException);
     }
   });
+  it('returns a user if correct password is provided', async () => {
+    fakeUserService.find = () =>
+      Promise.resolve([
+        {
+          email: 'asd@asd.com',
+          password:
+            'aef00ee430bc9947.9350c96ea5b43b58d1af6b2530d2dde06f0042691b29f2215c410d02f88c5734',
+        } as User,
+      ]);
+    const user = await service.signin('asd@asd.com', 'mypass');
+    expect(user).toBeDefined();
+  });
 });
