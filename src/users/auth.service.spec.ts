@@ -7,7 +7,6 @@ describe('AuthService', () => {
   let service: AuthService;
   let fakeUserService: Partial<UsersService>;
   beforeEach(async () => {
-    // Fake copy of user service
     const users: User[] = [];
     fakeUserService = {
       find: (email: string) => {
@@ -20,7 +19,7 @@ describe('AuthService', () => {
           email,
           password,
         } as User;
-        users.push();
+        users.push(user);
         return Promise.resolve(user);
       },
     };
@@ -44,12 +43,9 @@ describe('AuthService', () => {
     expect(hash).toBeDefined();
   });
   it('throws an error if the email is in use', async () => {
-    fakeUserService.find = () =>
-      Promise.resolve([
-        { id: 1, email: 'bob@bob.com', password: 'asdf' } as User,
-      ]);
+    await service.signup('bob@bob.com', '123bob');
     try {
-      await service.signup('bob@bob.com', 'asdf');
+      await service.signup('bob@bob.com', '123bob');
     } catch (err) {
       expect(err).toBeInstanceOf(BadRequestException);
       expect(err.message).toContain('Email bob@bob.com is already in use');
@@ -63,23 +59,15 @@ describe('AuthService', () => {
     }
   });
   it('throws an error if an invalid password is provided', async () => {
-    fakeUserService.find = () =>
-      Promise.resolve([{ email: 'bob@bob.com', password: 'asdf' } as User]);
+    await service.signup('sdadsa@dsadsa.com', '123123');
     try {
-      await service.signin('sdadsa@dsadsa.com', '123123');
+      await service.signin('sdadsa@dsadsa.com', 'bob');
     } catch (err) {
       expect(err).toBeInstanceOf(BadRequestException);
     }
   });
   it('returns a user if correct password is provided', async () => {
-    fakeUserService.find = () =>
-      Promise.resolve([
-        {
-          email: 'asd@asd.com',
-          password:
-            'aef00ee430bc9947.9350c96ea5b43b58d1af6b2530d2dde06f0042691b29f2215c410d02f88c5734',
-        } as User,
-      ]);
+    await service.signup('asd@asd.com', 'mypass');
     const user = await service.signin('asd@asd.com', 'mypass');
     expect(user).toBeDefined();
   });
